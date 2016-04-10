@@ -62,4 +62,5 @@ capability_field field[] = {
 extern void
 print_video_capability(struct v4l2_capability cap);
 
+/// ...
 #endif
