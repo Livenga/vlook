@@ -13,9 +13,13 @@
 #include "../../include/vlook.h"
 
 void
-print_video_capability(struct v4l2_capability cap) {
+print_video_capability(int video_fd) {
   extern capability_field field[];
   capability_field *field_ptr = (capability_field *)field;
+  
+  struct v4l2_capability cap;
+
+  xioctl(video_fd, VIDIOC_QUERYCAP, &cap);
 
   printf("Driver:  %s\n", (char *)cap.driver);
   printf("Card:    %s\n", (char *)cap.card);
