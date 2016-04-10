@@ -1,11 +1,20 @@
 #ifndef _VLOOK_H
 #define _VLOOK_H
 
-#define DevicePath "/dev/video0"
+#define Version          "1.0.0"
+#define DevicePath       "/dev/video0"
+#define DefaultExtension "jpg"
+#define SaveDir          "./pictures"
 
 #ifndef __LINUX_VIDEODEV2_H
 #include <linux/videodev2.h>
 #endif
+
+
+#ifndef _CANVAS_H
+#include "canvas.h"
+#endif
+
 
 /* src/io.c */
 extern int
@@ -13,15 +22,38 @@ xioctl(int fd,
        unsigned long request,
        void *arg);
 
-/* src/canvas/cv_png.c */
+
+/* src/utility.c */
+extern void
+memzero(void *s, size_t n);
 extern int
-pnwrite(const char *png_path,
-        const int width,
-        const int height,
-        const unsigned char **colors);
+confirm_directory(const char *path);
+extern void
+get_savepath(const char *dir,
+             const char *extension,
+             char *dest);
 
 
-/* src/video/video_print.c */
+/* src/camera/cam_utility.c */
+extern int
+cam_set_format(int video_fd);
+extern int
+cam_request_buffer(int video_fd,
+                   const int count);
+extern void *
+set_map_pointer(int  video_fd,
+                long *length);
+extern int
+cam_enqueue_map(int video_fd,
+                const int count);
+extern int
+cam_switch_stream(int video_fd,
+                  const int request);
+extern int
+cam_dequeue_map(int video_fd);
+
+
+/* src/camera/cam_print.c */
 #ifdef _PRINT_CAPABILITY
 typedef struct capability_field {
   __u32 id;
@@ -60,7 +92,6 @@ capability_field field[] = {
 #endif
 
 extern void
-print_video_capability(struct v4l2_capability cap);
+print_video_capability(int video_fd);
 
-/// ...
 #endif
