@@ -1,5 +1,5 @@
 CC=gcc
-FLAGS=-g -Wall -lpng
+FLAGS=-g -Wall -lpng -ljpeg
 
 OBJDIR=objs
 C_SOURCE=$(shell find src/* -name \*.c)
@@ -19,7 +19,7 @@ $(PRJC):$(OBJ_FILE)
 	$(CC) -o $@ $^ $(FLAGS)
 
 $(OBJDIR)/%.o:%.c
-	$(CC) -o $@ -c $< $(FLAGS)
+	$(CC) -o $@ -c $<
 
 clean:
 	rm $(PRJC) -r $(OBJDIR)
